@@ -1,10 +1,12 @@
 export default class LevelGenerator {
     constructor(width = 800, height = 600, tileSize = 40) {
-        this.width = width;
-        this.height = height;
+        // === RESPONSIVE: Usar configuración global ===
+        const config = window.GAME_CONFIG || { width: 800, height: 600 };
+        this.width = config.width;
+        this.height = config.height;
         this.tileSize = tileSize;
-        this.cols = Math.floor(width / tileSize);
-        this.rows = Math.floor(height / tileSize);
+        this.cols = Math.floor(this.width / tileSize);
+        this.rows = Math.floor(this.height / tileSize);
     }
 
     generate(level = 1) {

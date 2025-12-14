@@ -28,25 +28,49 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(cursors, spaceKey, bulletsGroup) {
-        // Movimiento
-        this.setVelocity(0);
+        // === CONTROLES TÁCTILES (MÓVIL) ===
+        const isMobile = window.GAME_CONFIG?.isMobile || false;
 
-        if (cursors.left.isDown) {
-            this.setVelocityX(-this.speed);
-        } else if (cursors.right.isDown) {
-            this.setVelocityX(this.speed);
-        }
+        if (isMobile) {
+            // Movimiento: seguir el dedo
+            const pointer = this.scene.input.activePointer;
+            if (pointer.isDown) {
+                const distance = Phaser.Math.Distance.Between(this.x, this.y, pointer.x, pointer.y);
+                if (distance > 10) {
+                    this.scene.physics.moveToObject(this, pointer, this.speed);
+                } else {
+                    this.setVelocity(0, 0);
+                }
+            } else {
+                this.setVelocity(0, 0);
+            }
 
-        if (cursors.up.isDown) {
-            this.setVelocityY(-this.speed);
-        } else if (cursors.down.isDown) {
-            this.setVelocityY(this.speed);
-        }
+            // Disparo automático
+            if (this.shootCooldown <= 0) {
+                this.shoot(bulletsGroup);
+                this.shootCooldown = this.shootDelay;
+            }
+        } else {
+            // === CONTROLES TECLADO (PC) ===
+            this.setVelocity(0);
 
-        // Disparo
-        if (spaceKey.isDown && this.shootCooldown <= 0) {
-            this.shoot(bulletsGroup);
-            this.shootCooldown = this.shootDelay;
+            if (cursors.left.isDown) {
+                this.setVelocityX(-this.speed);
+            } else if (cursors.right.isDown) {
+                this.setVelocityX(this.speed);
+            }
+
+            if (cursors.up.isDown) {
+                this.setVelocityY(-this.speed);
+            } else if (cursors.down.isDown) {
+                this.setVelocityY(this.speed);
+            }
+
+            // Disparo
+            if (spaceKey.isDown && this.shootCooldown <= 0) {
+                this.shoot(bulletsGroup);
+                this.shootCooldown = this.shootDelay;
+            }
         }
 
         if (this.shootCooldown > 0) {
