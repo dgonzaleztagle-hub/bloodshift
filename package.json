@@ -1,0 +1,20 @@
+{
+  "name": "blood-shift",
+  "version": "0.1.0",
+  "description": "Blood Shift - Prototipo de juego indie 2D",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["game", "phaser", "pixel-art"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
